@@ -1,0 +1,60 @@
+═══════════════════════════════════════════════════════════════
+  X DEAD v1.0 - IMPORTANTE: LEGGIMI PRIMA!
+═══════════════════════════════════════════════════════════════
+
+⚠️  NON PUOI USARE QUESTO TOOL SU WINDOWS O CURSOR!  ⚠️
+
+X DEAD deve essere eseguito su:
+  ✓ Kali Linux
+  ✓ Termux (Android)
+
+═══════════════════════════════════════════════════════════════
+  COME USARE X DEAD
+═══════════════════════════════════════════════════════════════
+
+SU KALI LINUX:
+  1. Apri il terminale di Kali Linux (Ctrl+Alt+T)
+  2. Vai nella cartella: cd ~/Desktop/kali\ linux\ tool
+  3. Avvia: sudo python3 x_dead.py
+
+SU TERMUX (Android):
+  1. Apri l'app Termux
+  2. Vai nella cartella: cd ~/tools/x-dead
+  3. Avvia: python3 x_dead.py
+
+═══════════════════════════════════════════════════════════════
+  NON USARE:
+═══════════════════════════════════════════════════════════════
+
+  ✗ Terminale di Cursor
+  ✗ PowerShell di Windows
+  ✗ CMD di Windows
+  ✗ Terminale online
+
+═══════════════════════════════════════════════════════════════
+  FUNZIONALITÀ DISPONIBILI:
+═══════════════════════════════════════════════════════════════
+
+  1. Network Discovery - Trova dispositivi sulla rete
+  2. Device Enumeration - Analizza i dispositivi
+  3. Port Scanning - Scansiona le porte
+  4. WiFi Scanning - Trova reti WiFi
+  5. WiFi Cracking - Password cracking (educativo)
+  6. Team Information - Info su Infinity X Team White Devel
+
+═══════════════════════════════════════════════════════════════
+  PER VEDERE LE INFO DEL TEAM:
+═══════════════════════════════════════════════════════════════
+
+  1. Avvia X DEAD su Kali/Termux
+  2. Premi 5 (Advanced Options)
+  3. Premi 3 (Team Information)
+  4. Vedrai chi siamo e cosa facciamo!
+
+═══════════════════════════════════════════════════════════════
+
+Created by: Infinity X Team White Devel
+Ethical Hackers & Security Experts
+
+═══════════════════════════════════════════════════════════════
+

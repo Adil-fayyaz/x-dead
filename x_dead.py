@@ -547,6 +547,18 @@ class XDead:
         print(f"{Colors.RED}{Colors.BOLD}  WiFi PASSWORD CRACKING{Colors.RESET}")
         print(f"{Colors.RED}{Colors.BOLD}{'═'*70}{Colors.RESET}\n")
         
+        # Check if running on Termux
+        is_termux = os.path.exists('/data/data/com.termux/files/usr/bin')
+        
+        if is_termux:
+            print(f"{Colors.YELLOW}{Colors.BOLD}⚠️  TERMUX LIMITATIONS ⚠️{Colors.RESET}")
+            print(f"{Colors.CYAN}You are running on Termux (Android). WiFi cracking has limitations:{Colors.RESET}")
+            print(f"{Colors.WHITE}  • Monitor mode may not work without root{Colors.RESET}")
+            print(f"{Colors.WHITE}  • aircrack-ng may not be available in Termux{Colors.RESET}")
+            print(f"{Colors.WHITE}  • Some features require root access{Colors.RESET}")
+            print(f"{Colors.YELLOW}[*] Dictionary Attack (Option 1) works if you have a captured handshake{Colors.RESET}")
+            print(f"{Colors.YELLOW}[*] For full features, use Kali Linux{Colors.RESET}\n")
+        
         print(f"{Colors.YELLOW}{Colors.BOLD}⚠️  LEGAL WARNING ⚠️{Colors.RESET}")
         print(f"{Colors.RED}This tool is for EDUCATIONAL PURPOSES ONLY!{Colors.RESET}")
         print(f"{Colors.RED}Only use on networks you OWN or have EXPLICIT PERMISSION to test!{Colors.RESET}")
@@ -580,6 +592,14 @@ class XDead:
     def dictionary_attack(self):
         """Dictionary attack on WiFi"""
         print(f"\n{Colors.CYAN}[*] Dictionary Attack{Colors.RESET}")
+        
+        # Check if on Termux
+        is_termux = os.path.exists('/data/data/com.termux/files/usr/bin')
+        if is_termux:
+            print(f"{Colors.YELLOW}[*] Running on Termux - Limited functionality{Colors.RESET}")
+            print(f"{Colors.CYAN}[*] You need a pre-captured handshake file (.cap){Colors.RESET}")
+            print(f"{Colors.CYAN}[*] aircrack-ng may need to be installed separately{Colors.RESET}\n")
+        
         print(f"{Colors.YELLOW}[*] This requires:{Colors.RESET}")
         print(f"{Colors.WHITE}  - Captured handshake (.cap file){Colors.RESET}")
         print(f"{Colors.WHITE}  - Wordlist file (rockyou.txt, etc.){Colors.RESET}")
@@ -610,7 +630,14 @@ class XDead:
                 print(f"\n{Colors.RED}[!] Password not found in wordlist{Colors.RESET}")
         except FileNotFoundError:
             print(f"{Colors.RED}[!] aircrack-ng not installed!{Colors.RESET}")
-            print(f"{Colors.YELLOW}[*] Install: sudo apt-get install aircrack-ng{Colors.RESET}")
+            is_termux = os.path.exists('/data/data/com.termux/files/usr/bin')
+            if is_termux:
+                print(f"{Colors.YELLOW}[*] On Termux: aircrack-ng may not be available{Colors.RESET}")
+                print(f"{Colors.YELLOW}[*] Try: pkg install aircrack-ng{Colors.RESET}")
+                print(f"{Colors.YELLOW}[*] Or use hashcat/hashcat-cli as alternative{Colors.RESET}")
+                print(f"{Colors.CYAN}[*] Note: Full WiFi cracking requires Kali Linux or root access{Colors.RESET}")
+            else:
+                print(f"{Colors.YELLOW}[*] Install: sudo apt-get install aircrack-ng{Colors.RESET}")
         except Exception as e:
             print(f"{Colors.RED}[!] Error: {e}{Colors.RESET}")
     
@@ -650,16 +677,35 @@ class XDead:
     def capture_handshake(self):
         """Capture WPA/WPA2 handshake"""
         print(f"\n{Colors.CYAN}[*] Capture WPA/WPA2 Handshake{Colors.RESET}")
+        
+        # Check if on Termux
+        is_termux = os.path.exists('/data/data/com.termux/files/usr/bin')
+        if is_termux:
+            print(f"{Colors.RED}{Colors.BOLD}⚠️  TERMUX LIMITATION ⚠️{Colors.RESET}")
+            print(f"{Colors.YELLOW}Capturing handshakes on Termux is VERY LIMITED:{Colors.RESET}")
+            print(f"{Colors.WHITE}  • Monitor mode usually requires root access{Colors.RESET}")
+            print(f"{Colors.WHITE}  • Android restrictions limit wireless interface access{Colors.RESET}")
+            print(f"{Colors.WHITE}  • airodump-ng may not work properly{Colors.RESET}")
+            print(f"{Colors.CYAN}[*] Recommendation: Use Kali Linux for handshake capture{Colors.RESET}")
+            print(f"{Colors.CYAN}[*] You can still crack passwords if you have a .cap file{Colors.RESET}\n")
+        
         print(f"{Colors.YELLOW}[*] This requires:{Colors.RESET}")
         print(f"{Colors.WHITE}  - airodump-ng installed{Colors.RESET}")
-        print(f"{Colors.WHITE}  - Wireless interface in monitor mode{Colors.RESET}\n")
+        print(f"{Colors.WHITE}  - Wireless interface in monitor mode{Colors.RESET}")
+        print(f"{Colors.WHITE}  - Root access (recommended){Colors.RESET}\n")
         
         print(f"{Colors.CYAN}[*] Steps:{Colors.RESET}")
         print(f"{Colors.WHITE}1. Put interface in monitor mode: airmon-ng start wlan0{Colors.RESET}")
         print(f"{Colors.WHITE}2. Scan for networks: airodump-ng wlan0mon{Colors.RESET}")
         print(f"{Colors.WHITE}3. Capture handshake: airodump-ng -c CHANNEL --bssid BSSID -w capture wlan0mon{Colors.RESET}")
         print(f"{Colors.WHITE}4. Deauthenticate clients: aireplay-ng -0 4 -a BSSID wlan0mon{Colors.RESET}")
-        print(f"{Colors.YELLOW}[*] Install: sudo apt-get install aircrack-ng{Colors.RESET}\n")
+        
+        if is_termux:
+            print(f"{Colors.YELLOW}[*] On Termux: These steps may not work without root{Colors.RESET}")
+            print(f"{Colors.YELLOW}[*] Install: pkg install aircrack-ng (if available){Colors.RESET}")
+        else:
+            print(f"{Colors.YELLOW}[*] Install: sudo apt-get install aircrack-ng{Colors.RESET}")
+        print()
     
     def team_info(self):
         """Display team information"""

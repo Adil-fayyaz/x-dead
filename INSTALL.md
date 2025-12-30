@@ -1,227 +1,268 @@
-# 📥 Guida Installazione X DEAD
+# 📥 X DEAD Installation Guide - For Beginners
 
-## 🎯 Installazione per Principianti
+## 🎯 Complete Step-by-Step Installation
 
-Questa guida ti aiuterà passo-passo ad installare X DEAD anche se non hai mai usato il terminale!
+This guide will help you install X DEAD even if you've never used a terminal before!
 
 ---
 
-## 📱 INSTALLAZIONE SU TERMUX (Android)
+## 📱 INSTALLATION ON TERMUX (Android)
 
-### ⚡ Metodo Veloce (Copia e Incolla)
+### ⚡ Quick Method (Copy & Paste)
 
-Apri Termux e incolla questo comando:
+Open Termux and paste this command:
 
 ```bash
 pkg update && pkg upgrade -y && pkg install python3 nmap arp-scan -y && python3 x_dead.py
 ```
 
-**Fatto!** Il tool si avvierà automaticamente.
+**Done!** The tool will start automatically.
 
 ---
 
-### 📝 Metodo Dettagliato (Passo-Passo)
+### 📝 Detailed Method (Step-by-Step)
 
-#### Passo 1: Apri Termux
-- Apri l'app **Termux** sul tuo telefono Android
+#### Step 1: Open Termux
+- Open the **Termux** app on your Android phone
+- You'll see a black screen with text - this is normal!
 
-#### Passo 2: Aggiorna Termux
-Copia e incolla questo comando, poi premi **Invio**:
+#### Step 2: Update Termux
+Copy and paste this command, then press **Enter**:
 ```bash
 pkg update && pkg upgrade -y
 ```
-Aspetta che finisca (potrebbe richiedere 1-2 minuti)
+**What happens:** Termux downloads updates (this takes 1-2 minutes)
+**Wait for:** The command to finish (you'll see `$` again)
 
-#### Passo 3: Installa Python
-Copia e incolla:
+#### Step 3: Install Python
+Copy and paste:
 ```bash
 pkg install python3 -y
 ```
-Premi **Invio** e aspetta
+**What happens:** Python 3 is installed
+**Wait for:** Installation to complete
 
-#### Passo 4: Installa nmap
-Copia e incolla:
+#### Step 4: Install nmap
+Copy and paste:
 ```bash
 pkg install nmap -y
 ```
-Premi **Invio** e aspetta
+**What happens:** nmap (network scanner) is installed
+**Wait for:** Installation to complete
 
-#### Passo 5: Installa arp-scan
-Copia e incolla:
+#### Step 5: Install arp-scan
+Copy and paste:
 ```bash
 pkg install arp-scan -y
 ```
-Premi **Invio** e aspetta
+**What happens:** arp-scan (network discovery tool) is installed
+**Wait for:** Installation to complete
 
-#### Passo 6: Vai nella cartella del tool
-Se hai scaricato `x_dead.py` nella cartella Download:
+#### Step 6: Go to the Tool Folder
+If you downloaded `x_dead.py` to Downloads folder:
 ```bash
 cd ~/storage/downloads
 ```
 
-Se è nella home:
+If it's in the home folder:
 ```bash
 cd ~
 ```
 
-#### Passo 7: Avvia X DEAD
+#### Step 7: Start X DEAD
 ```bash
 python3 x_dead.py
 ```
 
-**🎉 Fatto! Il tool è avviato!**
+**🎉 Done! The tool is running!**
 
 ---
 
-## 🐧 INSTALLAZIONE SU KALI LINUX
+## 🐧 INSTALLATION ON KALI LINUX
 
-### ⚡ Metodo Veloce (Copia e Incolla)
+### ⚡ Quick Method (Copy & Paste)
 
-Apri il terminale e incolla questo comando:
+Open terminal and paste this command:
 
 ```bash
 sudo apt-get update && sudo apt-get install -y python3 python3-pip nmap arp-scan && sudo python3 x_dead.py
 ```
 
-**Fatto!** Il tool si avvierà automaticamente.
+**Done!** The tool will start automatically.
 
 ---
 
-### 📝 Metodo Dettagliato (Passo-Passo)
+### 📝 Detailed Method (Step-by-Step)
 
-#### Passo 1: Apri il Terminale
-- Premi `Ctrl + Alt + T` oppure cerca "Terminal" nel menu
+#### Step 1: Open Terminal
+- Press `Ctrl + Alt + T` OR
+- Search for "Terminal" in the menu and click it
+- You'll see a window with text - this is the terminal!
 
-#### Passo 2: Aggiorna il Sistema
-Copia e incolla:
+#### Step 2: Update the System
+Copy and paste:
 ```bash
 sudo apt-get update
 ```
-Premi **Invio** e inserisci la password quando richiesto
+**What happens:** System downloads package lists
+**You'll be asked:** Your password (type it and press Enter - you won't see the password as you type, this is normal!)
+**Wait for:** Update to finish (1-2 minutes)
 
-#### Passo 3: Installa Python
-Copia e incolla:
+#### Step 3: Install Python
+Copy and paste:
 ```bash
 sudo apt-get install -y python3 python3-pip
 ```
-Premi **Invio** e aspetta
+**What happens:** Python 3 and pip are installed
+**You'll be asked:** Password (if needed)
+**Wait for:** Installation to complete
 
-#### Passo 4: Installa nmap
-Copia e incolla:
+#### Step 4: Install nmap
+Copy and paste:
 ```bash
 sudo apt-get install -y nmap
 ```
-Premi **Invio** e aspetta
+**What happens:** nmap (network scanner) is installed
+**Wait for:** Installation to complete
 
-#### Passo 5: Installa arp-scan
-Copia e incolla:
+#### Step 5: Install arp-scan
+Copy and paste:
 ```bash
 sudo apt-get install -y arp-scan
 ```
-Premi **Invio** e aspetta
+**What happens:** arp-scan (network discovery tool) is installed
+**Wait for:** Installation to complete
 
-#### Passo 6: Vai nella cartella del tool
-Se hai salvato `x_dead.py` sul Desktop:
+#### Step 6: Go to the Tool Folder
+If you saved `x_dead.py` on Desktop:
 ```bash
 cd ~/Desktop/kali\ linux\ tool
 ```
 
-Oppure se è in un'altra cartella, vai lì:
+Or if it's in another folder, go there:
 ```bash
-cd /percorso/della/cartella
+cd /path/to/your/folder
 ```
 
-#### Passo 7: Rendi eseguibile (Opzionale)
+#### Step 7: Make Executable (Optional)
 ```bash
 chmod +x x_dead.py
 ```
 
-#### Passo 8: Avvia X DEAD
+#### Step 8: Start X DEAD
 ```bash
 sudo python3 x_dead.py
 ```
 
-**🎉 Fatto! Il tool è avviato!**
+**🎉 Done! The tool is running!**
 
 ---
 
-## ❓ Domande Frequenti
+## ❓ Frequently Asked Questions
 
-### Q: Cosa significa "sudo"?
-**A:** `sudo` significa "Super User Do" - ti dà i permessi di amministratore. Su Kali Linux è necessario per alcune funzionalità.
+### Q: What does "sudo" mean?
+**A:** `sudo` means "Super User Do" - it gives you administrator permissions. On Kali Linux it's needed for some features.
 
-### Q: Perché devo inserire la password?
-**A:** Quando usi `sudo`, il sistema ti chiede la password per sicurezza. È normale!
+### Q: Why do I need to enter my password?
+**A:** When you use `sudo`, the system asks for your password for security. This is normal!
 
-### Q: Cosa faccio se vedo "Command not found"?
-**A:** Significa che il programma non è installato. Segui i passi di installazione delle dipendenze.
+### Q: What if I see "Command not found"?
+**A:** This means the program isn't installed. Follow the installation steps for dependencies.
 
-### Q: Posso usare il tool senza root/sudo?
-**A:** Sì, ma alcune funzionalità potrebbero non funzionare. Prova prima senza sudo, se non funziona usa sudo.
+### Q: Can I use the tool without root/sudo?
+**A:** Yes, but some features might not work. Try without sudo first, if it doesn't work use sudo.
 
-### Q: Come trovo la mia rete?
-**A:** Esegui questo comando:
+### Q: How do I find my network?
+**A:** Run this command:
 ```bash
 ip route show
 ```
-Cerca una riga che inizia con un indirizzo IP tipo `192.168.x.x` o `10.0.x.x`
+Look for a line starting with an IP address like `192.168.x.x` or `10.0.x.x`
+
+### Q: What if the installation is slow?
+**A:** This is normal! Installation can take 2-5 minutes depending on your internet speed.
+
+### Q: Can I close the terminal after starting the tool?
+**A:** No, keep the terminal open while using the tool. Close it when you're done.
 
 ---
 
-## 🆘 Problemi Comuni
+## 🆘 Common Problems
 
 ### ❌ "Permission denied"
-**Soluzione:** Usa `sudo` prima del comando:
+
+**Solution:** Use `sudo` before the command:
 ```bash
 sudo python3 x_dead.py
 ```
 
 ### ❌ "nmap: command not found"
-**Soluzione:** Installa nmap:
+
+**Solution:** Install nmap:
 - Termux: `pkg install nmap -y`
 - Kali: `sudo apt-get install nmap -y`
 
 ### ❌ "No devices found"
-**Soluzione:** 
-1. Verifica di essere connesso al WiFi
-2. Prova a inserire manualmente la rete quando richiesto
+
+**Solution:** 
+1. Make sure you're connected to WiFi
+2. Try entering the network manually when prompted
 
 ### ❌ "Network not detected"
-**Soluzione:** Inserisci manualmente:
-- Network: `192.168.1.0/24` (sostituisci con la tua)
-- Interface: `wlan0` (per WiFi) o `eth0` (per cavo)
+
+**Solution:** Enter manually:
+- Network: `192.168.1.0/24` (replace `192.168.1` with your network)
+- Interface: `wlan0` (WiFi) or `eth0` (Ethernet)
+
+### ❌ "Python not found"
+
+**Solution:**
+- Termux: `pkg install python3 -y`
+- Kali: `sudo apt-get install python3 -y`
 
 ---
 
-## ✅ Verifica Installazione
+## ✅ Verify Installation
 
-Dopo l'installazione, verifica che tutto funzioni:
+After installation, verify everything works:
 
 ```bash
-# Controlla Python
+# Check Python
 python3 --version
+# Should show: Python 3.x.x
 
-# Controlla nmap
+# Check nmap
 nmap --version
+# Should show: Nmap version x.x.x
 
-# Controlla arp-scan
+# Check arp-scan
 arp-scan --version
+# Should show: arp-scan version x.x.x
 ```
 
-Se tutti i comandi funzionano, sei pronto! 🚀
+If all commands work, you're ready! 🚀
 
 ---
 
-## 📞 Supporto
+## 📞 Need More Help?
 
-Se hai ancora problemi:
-1. Rileggi questa guida
-2. Controlla di aver seguito tutti i passi
-3. Verifica di avere una connessione internet attiva
+1. Re-read this guide carefully
+2. Check you followed all steps
+3. Make sure you have an active internet connection
+4. Verify all dependencies are installed
 
 ---
 
-**Buon Hacking! 🎯**
+## 🎯 Next Steps
+
+After installation:
+1. Run `python3 x_dead.py`
+2. Select option **1** to scan your network
+3. Explore the menu options
+4. Have fun discovering devices on your network!
+
+---
+
+**Good luck with your installation! 🎉**
 
 *Created by: Infinity X Team White Devel*
-

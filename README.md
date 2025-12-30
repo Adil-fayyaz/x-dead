@@ -5,208 +5,193 @@
 **Created by: Infinity X Team White Devel**  
 **Ethical Hackers & Security Experts**
 
-[![Version](https://img.shields.io/badge/version-1.0-red.svg)](https://github.com)
-[![Platform](https://img.shields.io/badge/platform-Kali%20Linux%20%7C%20Termux-blue.svg)](https://github.com)
+[![Version](https://img.shields.io/badge/version-1.0-red.svg)](https://github.com/Adil-fayyaz/x-dead)
+[![Platform](https://img.shields.io/badge/platform-Kali%20Linux%20%7C%20Termux-blue.svg)](https://github.com/Adil-fayyaz/x-dead)
 [![Python](https://img.shields.io/badge/python-3.6+-green.svg)](https://python.org)
+[![License](https://img.shields.io/badge/license-MIT-yellow.svg)](LICENSE)
 
 </div>
 
 ---
 
-## 📖 Descrizione
+## 📖 Description
 
-**X DEAD** è un potente tool di network discovery e controllo progettato per **Kali Linux** e **Termux**. Fornisce scansione completa della rete, enumerazione dei dispositivi e analisi avanzata della rete.
+**X DEAD** is a powerful network discovery and control tool designed for **Kali Linux** and **Termux**. It provides comprehensive network scanning, device enumeration, and advanced network analysis capabilities.
 
-### ⚡ Caratteristiche Principali
+Perfect for:
+- 🎓 **Students** learning cybersecurity
+- 🔒 **Security professionals** testing their networks
+- 🏠 **Home users** discovering devices on their network
+- 🏢 **Network administrators** mapping their infrastructure
 
-- ✅ **Network Discovery**: Rilevamento automatico e mappatura della rete
-- ✅ **Device Enumeration**: Scoperta completa dei dispositivi con IP, MAC, hostname e vendor
-- ✅ **Port Scanning**: Scansione avanzata delle porte con rilevamento servizi
-- ✅ **Multi-Platform**: Funziona su Kali Linux e Termux
-- ✅ **Interfaccia Interattiva**: Bellissima interfaccia CLI colorata
-- ✅ **Scansione Real-time**: Scansione veloce della rete basata su ARP e ping
+### ⚡ Key Features
+
+- ✅ **Network Discovery**: Automatic network detection and mapping
+- ✅ **Device Enumeration**: Complete device discovery with IP, MAC, hostname, and vendor information
+- ✅ **Port Scanning**: Advanced port scanning with service detection
+- ✅ **Multi-Platform**: Works on Kali Linux and Termux (Android)
+- ✅ **Interactive Interface**: Beautiful, color-coded CLI interface
+- ✅ **Real-time Scanning**: Fast ARP and ping-based network scanning
+- ✅ **Easy to Use**: Simple menu system - perfect for beginners
 
 ---
 
-## 🚀 Installazione Rapida
+## 🚀 Quick Start
 
-### 📱 Su Termux (Android)
+### 📱 On Termux (Android)
 
-#### Metodo 1: Installazione Automatica (Consigliato)
+**Copy and paste this single command:**
 
 ```bash
-# Copia e incolla tutto questo comando:
 pkg update && pkg upgrade -y && pkg install python3 nmap arp-scan -y && python3 x_dead.py
 ```
 
-#### Metodo 2: Installazione Manuale
+### 🐧 On Kali Linux
 
-**Passo 1:** Apri Termux e aggiorna:
-```bash
-pkg update && pkg upgrade -y
-```
-
-**Passo 2:** Installa le dipendenze:
-```bash
-pkg install python3 nmap arp-scan -y
-```
-
-**Passo 3:** Vai nella cartella del tool:
-```bash
-cd ~/storage/downloads  # se hai scaricato qui
-# oppure
-cd ~  # se è nella home
-```
-
-**Passo 4:** Avvia X DEAD:
-```bash
-python3 x_dead.py
-```
-
----
-
-### 🐧 Su Kali Linux
-
-#### Metodo 1: Installazione Automatica (Consigliato)
+**Copy and paste this single command:**
 
 ```bash
-# Copia e incolla tutto questo comando:
 sudo apt-get update && sudo apt-get install -y python3 python3-pip nmap arp-scan && sudo python3 x_dead.py
 ```
 
-#### Metodo 2: Installazione Manuale
-
-**Passo 1:** Apri il terminale e aggiorna il sistema:
-```bash
-sudo apt-get update
-```
-
-**Passo 2:** Installa le dipendenze:
-```bash
-sudo apt-get install -y python3 python3-pip nmap arp-scan
-```
-
-**Passo 3:** Vai nella cartella del tool:
-```bash
-cd ~/Desktop/kali\ linux\ tool  # o dove hai salvato il file
-```
-
-**Passo 4:** Rendi eseguibile lo script:
-```bash
-chmod +x x_dead.py
-```
-
-**Passo 5:** Avvia X DEAD (con sudo per funzionalità avanzate):
-```bash
-sudo python3 x_dead.py
-```
+**That's it!** The tool will start automatically.
 
 ---
 
-## 🎯 Come Usare X DEAD
+## 📋 Installation Guide
 
-### 1️⃣ Avvio del Tool
+### For Beginners (Step-by-Step)
 
-Dopo l'installazione, avvia semplicemente:
+👉 **See [INSTALL.md](INSTALL.md) for detailed installation instructions**
+
+The installation guide includes:
+- 📝 Step-by-step instructions
+- 🖼️ What to expect at each step
+- ❓ Troubleshooting common problems
+- ✅ Verification steps
+
+### Quick Installation
+
+#### Termux (Android)
+
+1. Open Termux app
+2. Run: `pkg update && pkg upgrade -y`
+3. Run: `pkg install python3 nmap arp-scan -y`
+4. Run: `python3 x_dead.py`
+
+#### Kali Linux
+
+1. Open terminal (Ctrl+Alt+T)
+2. Run: `sudo apt-get update`
+3. Run: `sudo apt-get install -y python3 python3-pip nmap arp-scan`
+4. Run: `sudo python3 x_dead.py`
+
+---
+
+## 🎯 How to Use
+
+### 1️⃣ Start the Tool
+
+After installation, simply run:
 ```bash
 python3 x_dead.py
-# oppure su Kali Linux:
+# or on Kali Linux:
 sudo python3 x_dead.py
 ```
 
-### 2️⃣ Menu Principale
+### 2️⃣ Main Menu
 
-Vedrai un menu con queste opzioni:
+You'll see a menu with these options:
 
 ```
-1. Scan Network (Auto Discovery)    - Scansiona automaticamente la rete
-2. Deep Scan Device                 - Analisi approfondita di un dispositivo
-3. View Discovered Devices          - Visualizza i dispositivi trovati
-4. Network Information               - Mostra informazioni sulla rete
-5. Advanced Options                  - Opzioni avanzate (v2.0)
-6. Exit                              - Esci dal programma
+1. Scan Network (Auto Discovery)    - Automatically scan your network
+2. Deep Scan Device                 - Detailed analysis of a device
+3. View Discovered Devices          - View all found devices
+4. Network Information               - Show network details
+5. Advanced Options                  - Advanced features (v2.0)
+6. Exit                              - Exit the program
 ```
 
-### 3️⃣ Scansione della Rete
+### 3️⃣ Scan Your Network
 
-1. Seleziona l'opzione **1** dal menu
-2. Il tool rileverà automaticamente la tua rete
-3. Se non riesce, ti chiederà di inserire:
-   - **Network**: Esempio `192.168.1.0/24` (sostituisci con la tua rete)
-   - **Interface**: Esempio `wlan0` o `eth0`
+1. Select option **1** from the menu
+2. The tool will automatically detect your network
+3. If it can't, you'll be asked to enter:
+   - **Network**: Example `192.168.1.0/24` (replace with your network)
+   - **Interface**: Example `wlan0` or `eth0`
 
-### 4️⃣ Visualizzare i Dispositivi
+### 4️⃣ View Discovered Devices
 
-Dopo la scansione, vedrai tutti i dispositivi connessi con:
-- 📍 Indirizzo IP
-- 🔢 Indirizzo MAC
+After scanning, you'll see all connected devices with:
+- 📍 IP Address
+- 🔢 MAC Address
 - 🏷️ Hostname
-- 🏭 Vendor/Produttore
+- 🏭 Vendor/Manufacturer
 
 ### 5️⃣ Deep Scan
 
-1. Seleziona l'opzione **2** dal menu
-2. Scegli il numero del dispositivo da analizzare
-3. Il tool eseguirà una scansione approfondita delle porte
+1. Select option **2** from the menu
+2. Choose the device number to analyze
+3. The tool will perform a deep port scan
 
 ---
 
-## 📋 Requisiti di Sistema
+## 📋 Requirements
 
-### Dipendenze Software:
-- **Python 3.6+** (già incluso in Kali/Termux)
-- **nmap** (scanner di porte)
-- **arp-scan** (scansione ARP)
+### Software Dependencies:
+- **Python 3.6+** (usually pre-installed on Kali/Termux)
+- **nmap** (port scanner)
+- **arp-scan** (ARP scanning)
 
-### Permessi:
-- **Root/Sudo** (consigliato per funzionalità complete)
-- **Permessi di rete** (per scansione)
+### Permissions:
+- **Root/Sudo** (recommended for full functionality)
+- **Network permissions** (for scanning)
 
 ---
 
-## 🔧 Risoluzione Problemi
+## 🔧 Troubleshooting
 
-### ❌ Problema: "Command not found: nmap"
+### ❌ Problem: "Command not found: nmap"
 
-**Soluzione:**
+**Solution:**
 ```bash
-# Su Termux:
+# On Termux:
 pkg install nmap -y
 
-# Su Kali Linux:
+# On Kali Linux:
 sudo apt-get install nmap -y
 ```
 
-### ❌ Problema: "Permission denied"
+### ❌ Problem: "Permission denied"
 
-**Soluzione:**
+**Solution:**
 ```bash
-# Su Kali Linux, usa sudo:
+# On Kali Linux, use sudo:
 sudo python3 x_dead.py
 
-# Su Termux, se necessario:
+# On Termux, if needed:
 su
 python3 x_dead.py
 ```
 
-### ❌ Problema: "No devices found"
+### ❌ Problem: "No devices found"
 
-**Soluzioni:**
-1. Verifica di essere connesso alla rete WiFi
-2. Controlla l'interfaccia di rete:
+**Solutions:**
+1. Make sure you're connected to WiFi
+2. Check your network interface:
    ```bash
    ip addr show
    ```
-3. Inserisci manualmente la rete quando richiesto
+3. Enter the network manually when prompted
 
-### ❌ Problema: "Network not detected"
+### ❌ Problem: "Network not detected"
 
-**Soluzione:**
-Inserisci manualmente:
-- **Network**: `192.168.1.0/24` (sostituisci `192.168.1` con la tua rete)
-- **Interface**: `wlan0` (WiFi) o `eth0` (Ethernet)
+**Solution:**
+Enter manually:
+- **Network**: `192.168.1.0/24` (replace `192.168.1` with your network)
+- **Interface**: `wlan0` (WiFi) or `eth0` (Ethernet)
 
-Per trovare la tua rete:
+To find your network:
 ```bash
 ip route show
 ```
@@ -230,55 +215,71 @@ ip route show
 
 ---
 
-## 🔮 Prossime Funzionalità (v2.0)
+## 🔮 Coming Soon (v2.0)
 
 - 🔍 Network Traffic Analysis
 - 🛡️ Vulnerability Assessment
 - ⚔️ Exploit Framework Integration
 - 🤖 Automated Attack Vectors
 - 📊 Advanced Reporting
+- 🌐 Web Interface
 
 ---
 
-## ⚠️ Disclaimer Legale
+## ⚠️ Legal Disclaimer
 
-**IMPORTANTE:** Questo tool è destinato **SOLO a scopi educativi e di testing autorizzato**. 
+**IMPORTANT:** This tool is for **EDUCATIONAL PURPOSES and AUTHORIZED TESTING ONLY**.
 
-- ✅ Usa solo su reti di tua proprietà
-- ✅ Usa solo con autorizzazione esplicita
-- ❌ Non usare su reti senza permesso
-- ❌ L'accesso non autorizzato è illegale
+- ✅ Use only on networks you own
+- ✅ Use only with explicit authorization
+- ❌ Do NOT use on networks without permission
+- ❌ Unauthorized access is illegal
 
-Gli sviluppatori **non sono responsabili** per l'uso improprio di questo strumento.
+The developers are **NOT responsible** for misuse of this tool.
 
 ---
 
-## 👥 Crediti
+## 👥 Credits
 
 **Infinity X Team White Devel**  
 *Ethical Hackers & Security Experts*
 
 ---
 
-## 📝 Licenza
+## 📝 License
 
-Questo progetto è rilasciato per scopi educativi. Usa responsabilmente.
+This project is released under the MIT License. See [LICENSE](LICENSE) file for details.
+
+**Use responsibly and ethically.**
 
 ---
 
-## 🆘 Supporto
+## 🆘 Support
 
-Se hai problemi o domande:
-1. Controlla la sezione "Risoluzione Problemi" sopra
-2. Verifica di aver installato tutte le dipendenze
-3. Assicurati di avere i permessi necessari
+If you have problems or questions:
+1. Check the "Troubleshooting" section above
+2. Read [INSTALL.md](INSTALL.md) for detailed installation help
+3. Verify you've installed all dependencies
+4. Make sure you have the necessary permissions
+
+---
+
+## 🌟 Contributing
+
+Contributions are welcome! Feel free to:
+- 🐛 Report bugs
+- 💡 Suggest features
+- 📝 Improve documentation
+- 🔧 Submit pull requests
 
 ---
 
 <div align="center">
 
-**⭐ Se questo tool ti è stato utile, lascia una stella su GitHub! ⭐**
+**⭐ If this tool was helpful, please give it a star on GitHub! ⭐**
 
 Made with ❤️ by **Infinity X Team White Devel**
+
+[🔗 View on GitHub](https://github.com/Adil-fayyaz/x-dead)
 
 </div>

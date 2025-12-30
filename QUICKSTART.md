@@ -1,6 +1,6 @@
-# ⚡ Quick Start - X DEAD
+# ⚡ X DEAD Quick Start Guide
 
-## 🚀 Avvio Rapido in 3 Passi
+## 🚀 Start in 3 Steps
 
 ### 📱 Termux (Android)
 
@@ -16,27 +16,26 @@ sudo apt-get update && sudo apt-get install -y python3 python3-pip nmap arp-scan
 
 ---
 
-## 📖 Come Usare (Prima Volta)
+## 📖 How to Use (First Time)
 
-1. **Avvia il tool** (vedi comandi sopra)
-2. **Premi `1`** per scansionare la rete
-3. **Aspetta** che trovi i dispositivi
-4. **Guarda** la lista dei dispositivi trovati
-5. **Premi `2`** per analizzare un dispositivo specifico
+1. **Start the tool** (see commands above)
+2. **Press `1`** to scan your network
+3. **Wait** for devices to be found
+4. **Look** at the list of discovered devices
+5. **Press `2`** to analyze a specific device
 
-**È tutto!** 🎉
+**That's it!** 🎉
 
 ---
 
-## ❓ Problemi?
+## ❓ Problems?
 
-- **"Command not found"** → Installa le dipendenze (vedi README.md)
-- **"No devices found"** → Verifica di essere connesso al WiFi
-- **"Permission denied"** → Usa `sudo` prima del comando
+- **"Command not found"** → Install dependencies (see README.md)
+- **"No devices found"** → Make sure you're connected to WiFi
+- **"Permission denied"** → Use `sudo` before the command
 
-Per più aiuto, leggi **INSTALL.md**
+For more help, read **INSTALL.md**
 
 ---
 
 *Created by: Infinity X Team White Devel*
-

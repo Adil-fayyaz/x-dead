@@ -65,9 +65,12 @@ class XDead:
     
     def check_requirements(self):
         """Check if required tools are installed"""
-        required_tools = ['nmap', 'arp-scan']
+        required_tools = ['nmap']
+        optional_tools = ['arp-scan']
         missing_tools = []
+        missing_optional = []
         
+        # Check required tools
         for tool in required_tools:
             try:
                 subprocess.run([tool, '--version'], 
@@ -77,10 +80,25 @@ class XDead:
             except (FileNotFoundError, subprocess.TimeoutExpired):
                 missing_tools.append(tool)
         
+        # Check optional tools
+        for tool in optional_tools:
+            try:
+                subprocess.run([tool, '--version'], 
+                             stdout=subprocess.PIPE, 
+                             stderr=subprocess.PIPE, 
+                             timeout=5)
+            except (FileNotFoundError, subprocess.TimeoutExpired):
+                missing_optional.append(tool)
+        
         if missing_tools:
-            print(f"{Colors.RED}[!] Missing tools: {', '.join(missing_tools)}{Colors.RESET}")
-            print(f"{Colors.YELLOW}[*] Installing required tools...{Colors.RESET}")
+            print(f"{Colors.RED}[!] Missing required tools: {', '.join(missing_tools)}{Colors.RESET}")
+            print(f"{Colors.YELLOW}[*] Please install: {', '.join(missing_tools)}{Colors.RESET}")
             return False
+        
+        if missing_optional:
+            print(f"{Colors.YELLOW}[*] Optional tools not found: {', '.join(missing_optional)}{Colors.RESET}")
+            print(f"{Colors.CYAN}[*] Will use alternative methods (ping scan){Colors.RESET}")
+        
         return True
     
     def get_local_network(self):
@@ -116,30 +134,37 @@ class XDead:
         print(f"\n{Colors.CYAN}[*] Scanning network {network} using ARP...{Colors.RESET}")
         
         try:
-            # Use arp-scan for fast discovery
-            cmd = ['arp-scan', '--local', '--interface', interface]
-            result = subprocess.run(cmd, capture_output=True, text=True, timeout=60)
-            
-            for line in result.stdout.split('\n'):
-                if '\t' in line and not line.startswith('Interface:'):
-                    parts = line.split('\t')
-                    if len(parts) >= 2:
-                        ip = parts[0].strip()
-                        mac = parts[1].strip()
-                        vendor = parts[2].strip() if len(parts) > 2 else "Unknown"
-                        
-                        devices.append({
-                            'ip': ip,
-                            'mac': mac,
-                            'vendor': vendor,
-                            'status': 'active',
-                            'hostname': self.get_hostname(ip)
-                        })
+            # Check if arp-scan is available
+            result = subprocess.run(['which', 'arp-scan'], 
+                                  capture_output=True, text=True, timeout=2)
+            if result.returncode == 0:
+                # Use arp-scan for fast discovery
+                cmd = ['arp-scan', '--local', '--interface', interface]
+                result = subprocess.run(cmd, capture_output=True, text=True, timeout=60)
+                
+                for line in result.stdout.split('\n'):
+                    if '\t' in line and not line.startswith('Interface:'):
+                        parts = line.split('\t')
+                        if len(parts) >= 2:
+                            ip = parts[0].strip()
+                            mac = parts[1].strip()
+                            vendor = parts[2].strip() if len(parts) > 2 else "Unknown"
+                            
+                            devices.append({
+                                'ip': ip,
+                                'mac': mac,
+                                'vendor': vendor,
+                                'status': 'active',
+                                'hostname': self.get_hostname(ip)
+                            })
+                if devices:
+                    return devices
         except Exception as e:
-            print(f"{Colors.YELLOW}[*] ARP scan failed, trying alternative method...{Colors.RESET}")
-            # Fallback to ping scan
-            devices = self.scan_network_ping(network)
+            pass
         
+        # Fallback to ping scan if arp-scan not available or failed
+        print(f"{Colors.YELLOW}[*] ARP scan not available, using ping scan method...{Colors.RESET}")
+        devices = self.scan_network_ping(network)
         return devices
     
     def scan_network_ping(self, network: str) -> List[Dict]:

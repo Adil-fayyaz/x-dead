@@ -1,0 +1,12 @@
+# X DEAD Requirements
+# Python packages (if needed in future versions)
+
+# Note: Main dependencies are system packages:
+# - nmap
+# - arp-scan
+# - Python 3.6+
+
+# Future Python dependencies may include:
+# scapy>=2.4.0
+# netifaces>=0.11.0
+
